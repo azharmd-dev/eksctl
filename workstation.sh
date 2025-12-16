@@ -16,14 +16,19 @@ curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.34.2/2025-11-13/bin/linu
 chmod +x ./kubectl
 mkdir -p $HOME/bin && cp ./kubectl  /usr/local/bin && export PATH=$HOME/bin:$PATH
 
-#------ =manage EKS Kubernetes cluster -----
+#------ Manage EKS Kubernetes cluster -----
 ARCH=amd64
 PLATFORM=$(uname -s)_$ARCH
 curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
 tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 sudo install -m 0755 /tmp/eksctl /usr/local/bin && rm /tmp/eksctl
 
+#----Kubens------
 sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
 sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
 
-curl -sS https://webinstall.dev/k9s | bash
+### -------- k9s (install for ec2-user) --------
+su - ec2-user -c "curl -sS https://webinstall.dev/k9s | bash"
+
+### -------- Clone the repo --------
+su - ec2-user -c "git clone https://github.com/azharmd-dev/eksctl.git"
